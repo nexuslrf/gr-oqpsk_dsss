@@ -26,7 +26,8 @@ include(GrPlatform) #define LIB_SUFFIX
 include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND zigbee_OQPSK_sources
-    access_code_prefixer_impl.cc )
+    access_code_prefixer.cc
+    packet_sink.cc )
 
 set(zigbee_OQPSK_sources "${zigbee_OQPSK_sources}" PARENT_SCOPE)
 if(NOT zigbee_OQPSK_sources)
@@ -60,6 +61,7 @@ include_directories(${CPPUNIT_INCLUDE_DIRS})
 list(APPEND test_zigbee_OQPSK_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/test_zigbee_OQPSK.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/qa_zigbee_OQPSK.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/qa_packet_sink.cc
 )
 
 add_executable(test-zigbee_OQPSK ${test_zigbee_OQPSK_sources})

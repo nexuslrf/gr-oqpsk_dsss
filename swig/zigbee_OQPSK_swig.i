@@ -9,7 +9,10 @@
 
 %{
 #include "zigbee_OQPSK/access_code_prefixer.h"
+#include "zigbee_OQPSK/packet_sink.h"
 %}
 
 %include "zigbee_OQPSK/access_code_prefixer.h"
 GR_SWIG_BLOCK_MAGIC2(zigbee_OQPSK, access_code_prefixer);
+%include "zigbee_OQPSK/packet_sink.h"
+GR_SWIG_BLOCK_MAGIC2(zigbee_OQPSK, packet_sink);

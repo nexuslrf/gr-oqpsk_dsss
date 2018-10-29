@@ -23,5 +23,6 @@
 ########################################################################
 install(FILES
     api.h
-    access_code_prefixer.h DESTINATION include/zigbee_OQPSK
+    access_code_prefixer.h
+    packet_sink.h DESTINATION include/zigbee_OQPSK
 )
