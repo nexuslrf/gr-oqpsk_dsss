@@ -25,10 +25,8 @@ include(GrPlatform) #define LIB_SUFFIX
 
 include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
-
 list(APPEND zigbee_OQPSK_sources
-    access_code_prefixer_impl.cc
-)
+    access_code_prefixer_impl.cc )
 
 set(zigbee_OQPSK_sources "${zigbee_OQPSK_sources}" PARENT_SCOPE)
 if(NOT zigbee_OQPSK_sources)

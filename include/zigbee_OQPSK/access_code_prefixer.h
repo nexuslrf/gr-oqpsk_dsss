@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2018 RuofanLiang@SJTU.
+ * Copyright 2018 RuofanLiang.
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #define INCLUDED_ZIGBEE_OQPSK_ACCESS_CODE_PREFIXER_H
 
 #include <zigbee_OQPSK/api.h>
-#include <gnuradio/tagged_stream_block.h>
+#include <gnuradio/block.h>
 
 namespace gr {
   namespace zigbee_OQPSK {
@@ -33,7 +33,7 @@ namespace gr {
      * \ingroup zigbee_OQPSK
      *
      */
-    class ZIGBEE_OQPSK_API access_code_prefixer : virtual public gr::tagged_stream_block
+    class ZIGBEE_OQPSK_API access_code_prefixer : virtual public gr::block
     {
      public:
       typedef boost::shared_ptr<access_code_prefixer> sptr;
@@ -46,7 +46,7 @@ namespace gr {
        * class. zigbee_OQPSK::access_code_prefixer::make is the public interface for
        * creating new instances.
        */
-      static sptr make(pad,preamble);
+      static sptr (int pad=0, int preamble=0x000000a7); // per IEEE 802.15.4
     };
 
   } // namespace zigbee_OQPSK

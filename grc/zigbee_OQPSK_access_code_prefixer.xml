@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <block>
-  <name>access_code_prefixer</name>
+  <name>Access Code Prefixer</name>
   <key>zigbee_OQPSK_access_code_prefixer</key>
   <category>[zigbee_OQPSK]</category>
   <import>import zigbee_OQPSK</import>
@@ -11,11 +11,17 @@
        * key (makes the value accessible as $keyname, e.g. in the make node)
        * type -->
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+    <name>Pad</name>
+    <key>pad</key>
+    <value>0x00</value>
+    <type>hex</type>
   </param>
-
+  <param>
+		<name>Preamble</name>
+		<key>preamble</key>
+		<value>0x000000a7</value>
+		<type>hex</type>
+	</param>
   <!-- Make one 'sink' node per input. Sub-nodes:
        * name (an identifier for the GUI)
        * type
@@ -23,7 +29,7 @@
        * optional (set to 1 for optional inputs) -->
   <sink>
     <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>message</type>
   </sink>
 
   <!-- Make one 'source' node per output. Sub-nodes:
@@ -33,6 +39,6 @@
        * optional (set to 1 for optional inputs) -->
   <source>
     <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>message</type>
   </source>
 </block>
