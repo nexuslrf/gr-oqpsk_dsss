@@ -388,7 +388,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 							meta = pmt::dict_add(meta, pmt::mp("lqi"), pmt::from_long(lqi));
 
 							std::memcpy(buf, d_packet, d_packetlen_cnt);
-							pmt::pmt_t payload = pmt::make_blob(buf, d_packetlen_cnt);
+							pmt::pmt_t payload = pmt::init_u8vector(d_packetlen_cnt, buf);
 
 							message_port_pub(pmt::mp("out"), pmt::cons(meta, payload));
 
