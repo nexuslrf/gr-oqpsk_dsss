@@ -21,14 +21,14 @@
 
 #include <gnuradio/attributes.h>
 #include <cppunit/TestAssert.h>
-#include "qa_packet_sink.cc.h"
-#include <zigbee_OQPSK/packet_sink.cc.h>
+#include "qa_packet_sink.h"
+#include <zigbee_OQPSK/packet_sink.h>
 
 namespace gr {
   namespace zigbee_OQPSK {
 
     void
-    qa_packet_sink.cc::t1()
+    qa_packet_sink::t1()
     {
       // Put test here
     }

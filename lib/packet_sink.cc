@@ -65,14 +65,14 @@ static const unsigned long CHIP_MAPPING[4][16] = {
 static const int MAX_PKT_LEN    = 128 -  1; // remove header and CRC
 static const int MAX_LQI_SAMPLES = 8; // Number of chip correlation samples to take
 
-static const long MASKTABLE1[] = {
+static const unsigned long MASKTABLE1[] = {
     0x7E,
     0x7FFE,
     0x7FFFFFFE,
     0x7FFFFFFFFFFFFFFE
 };
 
-static const long MASKTABLE2[] = {
+static const unsigned long MASKTABLE2[] = {
     0xFE,
     0xFFFE,
     0xFFFFFFFE,
@@ -130,7 +130,7 @@ unsigned char decode_chips(unsigned int chips){
 	for(i=0; i<16; i++) {
 		// FIXME: we can store the last chip
 		// ignore the first and last chip since it depends on the last chip.
-		unsigned int threshold = gr::blocks::count_bits32((chips & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[i] & MASKTABLE1[d_dsss_index]));
+		unsigned int threshold = gr::blocks::count_bits64((chips & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[d_dsss_index][i] & MASKTABLE1[d_dsss_index]));
 
 		if (threshold < min_threshold) {
 			best_match = i;
@@ -140,7 +140,7 @@ unsigned char decode_chips(unsigned int chips){
 
 	if (min_threshold < d_threshold) {
 		if (d_verbose)
-			fprintf(stderr, "Found sequence with %d errors at 0x%x\n", min_threshold, (chips & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[best_match] & MASKTABLE1[d_dsss_index])), fflush(stderr);
+			fprintf(stderr, "Found sequence with %d errors at 0x%x\n", min_threshold, (chips & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[d_dsss_index][best_match] & MASKTABLE1[d_dsss_index])), fflush(stderr);
 		// LQI: Average number of chips correct * MAX_LQI_SAMPLES
 		//
 		if (d_lqi_sample_count < MAX_LQI_SAMPLES) {
@@ -239,10 +239,10 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 				// The first if block syncronizes to chip sequences.
 				if(d_preamble_cnt == 0){
 					unsigned int threshold;
-					threshold = gr::blocks::count_bits32((d_shift_reg & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[0] & MASKTABLE1[d_dsss_index]));
+					threshold = gr::blocks::count_bits64((d_shift_reg & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[d_dsss_index][0] & MASKTABLE1[d_dsss_index]));
 					if(threshold < d_threshold) {
 						//  fprintf(stderr, "Threshold %d d_preamble_cnt: %d\n", threshold, d_preamble_cnt);
-						//if ((d_shift_reg&0xFFFFFE) == (CHIP_MAPPING[0]&0xFFFFFE)) {
+						//if ((d_shift_reg&0xFFFFFE) == (CHIP_MAPPING[d_dsss_index][0]&0xFFFFFE)) {
 						if (d_verbose2)
 							fprintf(stderr,"Found 0 in chip sequence\n"),fflush(stderr);
 						// we found a 0 in the chip sequence
@@ -255,26 +255,26 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 						d_chip_cnt = 0;
 
 						if(d_packet_byte == 0) {
-							if (gr::blocks::count_bits32((d_shift_reg & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[0] & MASKTABLE2[d_dsss_index])) <= d_threshold) {
+							if (gr::blocks::count_bits64((d_shift_reg & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[d_dsss_index][0] & MASKTABLE2[d_dsss_index])) <= d_threshold) {
 								if (d_verbose2)
 									fprintf(stderr,"Found %d 0 in chip sequence\n", d_preamble_cnt),fflush(stderr);
 								// we found an other 0 in the chip sequence
 								d_packet_byte = 0;
 								d_preamble_cnt ++;
-							} else if (gr::blocks::count_bits32((d_shift_reg & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[7] & MASKTABLE2[d_dsss_index])) <= d_threshold) {
+							} else if (gr::blocks::count_bits64((d_shift_reg & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[d_dsss_index][7] & MASKTABLE2[d_dsss_index])) <= d_threshold) {
 								if (d_verbose2)
 									fprintf(stderr,"Found first SFD\n"),fflush(stderr);
 								d_packet_byte = 7 << 4;
 							} else {
 								// we are not in the synchronization header
 								if (d_verbose2)
-									fprintf(stderr, "Wrong first byte of SFD. %u\n", d_shift_reg), fflush(stderr);
+									fprintf(stderr, "Wrong first byte of SFD. %lu\n", d_shift_reg), fflush(stderr);
 								enter_search();
 								break;
 							}
 
 						} else {
-							if (gr::blocks::count_bits32((d_shift_reg & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[10] & MASKTABLE2[d_dsss_index])) <= d_threshold) {
+							if (gr::blocks::count_bits64((d_shift_reg & MASKTABLE1[d_dsss_index]) ^ (CHIP_MAPPING[d_dsss_index][10] & MASKTABLE2[d_dsss_index])) <= d_threshold) {
 								d_packet_byte |= 0xA;
 								if (d_verbose2)
 									fprintf(stderr,"Found sync, 0x%x\n", d_packet_byte),fflush(stderr);
@@ -284,7 +284,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 								break;
 							} else {
 								if (d_verbose)
-									fprintf(stderr, "Wrong second byte of SFD. %u\n", d_shift_reg), fflush(stderr);
+									fprintf(stderr, "Wrong second byte of SFD. %lu\n", d_shift_reg), fflush(stderr);
 								enter_search();
 								break;
 							}
@@ -313,7 +313,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 					if(c == 0xFF){
 						// something is wrong. restart the search for a sync
 						if(d_verbose2)
-							fprintf(stderr, "Found a not valid chip sequence! %u\n", d_shift_reg), fflush(stderr);
+							fprintf(stderr, "Found a not valid chip sequence! %lu\n", d_shift_reg), fflush(stderr);
 
 						enter_search();
 						break;
@@ -357,7 +357,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 					if(c == 0xff){
 						// something is wrong. restart the search for a sync
 						if(d_verbose2)
-							fprintf(stderr, "Found a not valid chip sequence! %u\n", d_shift_reg), fflush(stderr);
+							fprintf(stderr, "Found a not valid chip sequence! %lu\n", d_shift_reg), fflush(stderr);
 
 						enter_search();
 						break;
@@ -450,6 +450,7 @@ private:
 	char buf[256];
 };
 
-packet_sink::sptr packet_sink::make(unsigned int threshold) {
-	return gnuradio::get_initial_sptr(new packet_sink_impl(threshold));
+packet_sink::sptr packet_sink::make(unsigned int threshold,unsigned int dsss_mode,
+          int verbose,int verbose2) {
+	return gnuradio::get_initial_sptr(new packet_sink_impl(threshold,dsss_mode,verbose,verbose2));
 }

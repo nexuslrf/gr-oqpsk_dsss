@@ -46,7 +46,7 @@ namespace gr {
        * class. zigbee_OQPSK::access_code_prefixer::make is the public interface for
        * creating new instances.
        */
-      static sptr (int pad=0, int preamble=0x000000a7); // per IEEE 802.15.4
+      static sptr make(int pad=0, int preamble=0x000000a7); // per IEEE 802.15.4
     };
 
   } // namespace zigbee_OQPSK

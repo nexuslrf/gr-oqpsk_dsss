@@ -1,38 +1,46 @@
 <?xml version="1.0"?>
 <block>
-  <name>packet_sink</name>
+  <name>Packet sink</name>
   <key>zigbee_OQPSK_packet_sink</key>
   <category>[zigbee_OQPSK]</category>
   <import>import zigbee_OQPSK</import>
   <make>zigbee_OQPSK.packet_sink($threshold, $dsss_mode, $verbose, $verbose2)</make>
-  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
-       Sub-nodes:
-       * name
-       * key (makes the value accessible as $keyname, e.g. in the make node)
-       * type -->
+
+	<param>
+		<name>Threshold</name>
+		<key>threshold</key>
+		<value>10</value>
+		<type>int</type>
+	</param>
+
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
-  </param>
+		<name>Dsss mode</name>
+		<key>dsss_mode</key>
+		<value>32</value>
+		<type>int</type>
+	</param>
 
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
-  <sink>
-    <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
-  </sink>
+  <param>
+		<name>Verbose</name>
+		<key>verbose</key>
+		<value>0</value>
+		<type>int</type>
+	</param>
 
-  <!-- Make one 'source' node per output. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
-  <source>
-    <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
-  </source>
+  <param>
+		<name>Verbose2</name>
+		<key>verbose2</key>
+		<value>0</value>
+		<type>int</type>
+	</param>
+
+	<sink>
+		<name>in</name>
+		<type>float</type>
+		<nports>1</nports>
+	</sink>
+	<source>
+		<name>out</name>
+		<type>message</type>
+	</source>
 </block>
