@@ -17,7 +17,7 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#include <zigbee_OQPSK/access_code_prefixer.h>
+#include <zigbee_OQPSK/my_access_code_prefixer.h>
 
 #include <gnuradio/io_signature.h>
 #include <gnuradio/block_detail.h>
@@ -25,12 +25,12 @@
 
 using namespace gr::zigbee_OQPSK;
 
-class access_code_prefixer_impl : public access_code_prefixer {
+class my_access_code_prefixer_impl : public my_access_code_prefixer {
 
 	public:
 
-	access_code_prefixer_impl(int pad, int preamble) :
-			block("access_code_prefixer",
+	my_access_code_prefixer_impl(int pad, int preamble) :
+			block("my_access_code_prefixer",
 				gr::io_signature::make(0, 0, 0),
 				gr::io_signature::make(0, 0, 0)),
 			d_preamble(preamble) {
@@ -38,7 +38,7 @@ class access_code_prefixer_impl : public access_code_prefixer {
 	    message_port_register_out(pmt::mp("out"));
 
 	    message_port_register_in(pmt::mp("in"));
-	    set_msg_handler(pmt::mp("in"), boost::bind(&access_code_prefixer_impl::make_frame, this, _1));
+	    set_msg_handler(pmt::mp("in"), boost::bind(&my_access_code_prefixer_impl::make_frame, this, _1));
 	    buf[0] = pad & 0xFF;
 
 	    for(int i = 4; i > 0; i--) {
@@ -47,7 +47,7 @@ class access_code_prefixer_impl : public access_code_prefixer {
 	    }
 	}
 
-	~access_code_prefixer_impl() {
+	~my_access_code_prefixer_impl() {
 
 	}
 
@@ -80,7 +80,7 @@ class access_code_prefixer_impl : public access_code_prefixer {
 
 };
 
-access_code_prefixer::sptr
-access_code_prefixer::make(int pad, int preamble) {
-	return gnuradio::get_initial_sptr(new access_code_prefixer_impl(pad,preamble));
+my_access_code_prefixer::sptr
+my_access_code_prefixer::make(int pad, int preamble) {
+	return gnuradio::get_initial_sptr(new my_access_code_prefixer_impl(pad,preamble));
 }

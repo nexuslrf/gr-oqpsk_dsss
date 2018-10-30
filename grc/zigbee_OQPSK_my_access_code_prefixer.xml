@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <block>
   <name>Access Code Prefixer</name>
-  <key>zigbee_OQPSK_access_code_prefixer</key>
+  <key>zigbee_OQPSK_my_access_code_prefixer</key>
   <category>[zigbee_OQPSK]</category>
   <import>import zigbee_OQPSK</import>
-  <make>zigbee_OQPSK.access_code_prefixer($pad, $preamble)</make>
+  <make>zigbee_OQPSK.my_access_code_prefixer($pad, $preamble)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name

@@ -27,13 +27,13 @@
  */
 
 #include "qa_zigbee_OQPSK.h"
-#include "qa_packet_sink.h"
+#include "qa_my_packet_sink.h"
 
 CppUnit::TestSuite *
 qa_zigbee_OQPSK::suite()
 {
   CppUnit::TestSuite *s = new CppUnit::TestSuite("zigbee_OQPSK");
-  s->addTest(gr::zigbee_OQPSK::qa_packet_sink::suite());
+  s->addTest(gr::zigbee_OQPSK::qa_my_packet_sink::suite());
 
   return s;
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <block>
   <name>Packet sink</name>
-  <key>zigbee_OQPSK_packet_sink</key>
+  <key>zigbee_OQPSK_my_packet_sink</key>
   <category>[zigbee_OQPSK]</category>
   <import>import zigbee_OQPSK</import>
-  <make>zigbee_OQPSK.packet_sink($threshold, $dsss_mode, $verbose, $verbose2)</make>
+  <make>zigbee_OQPSK.my_packet_sink($threshold, $dsss_mode, $verbose, $verbose2)</make>
 
 	<param>
 		<name>Threshold</name>

@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2018 packet_sink.
+ * Copyright 2018 RuofanLiang.
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <zigbee_OQPSK/packet_sink.h>
+#include <zigbee_OQPSK/my_packet_sink.h>
 #include <gnuradio/io_signature.h>
 #include <cstdio>
 #include <errno.h>
@@ -79,7 +79,7 @@ static const unsigned long MASKTABLE2[] = {
     0xFFFFFFFFFFFFFFFE
 };
 
-class packet_sink_impl : public packet_sink {
+class my_packet_sink_impl : public my_packet_sink {
 public:
 
 void enter_search()
@@ -158,9 +158,8 @@ int slice(float x) {
 	return x > 0 ? 1 : 0;
 }
 
-packet_sink_impl(unsigned int threshold,unsigned int dsss_mode,
-          int verbose,int verbose2)
-  : block ("packet_sink",
+my_packet_sink_impl(unsigned int threshold,unsigned int dsss_mode,int verbose,int verbose2)
+  : block ("my_packet_sink",
 		   gr::io_signature::make(1, 1, sizeof(float)),
 		   gr::io_signature::make(0, 0, 0)),
     d_threshold(threshold),
@@ -202,7 +201,7 @@ packet_sink_impl(unsigned int threshold,unsigned int dsss_mode,
 
 }
 
-~packet_sink_impl()
+~my_packet_sink_impl()
 {
 }
 
@@ -388,7 +387,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 							meta = pmt::dict_add(meta, pmt::mp("lqi"), pmt::from_long(lqi));
 
 							std::memcpy(buf, d_packet, d_packetlen_cnt);
-							pmt::pmt_t payload = pmt::init_u8vector(d_packetlen_cnt, buf);
+							pmt::pmt_t payload = pmt::init_u8vector(d_packetlen_cnt, d_packet);
 
 							message_port_pub(pmt::mp("out"), pmt::cons(meta, payload));
 
@@ -450,7 +449,7 @@ private:
 	char buf[256];
 };
 
-packet_sink::sptr packet_sink::make(unsigned int threshold,unsigned int dsss_mode,
+my_packet_sink::sptr my_packet_sink::make(unsigned int threshold,unsigned int dsss_mode,
           int verbose,int verbose2) {
-	return gnuradio::get_initial_sptr(new packet_sink_impl(threshold,dsss_mode,verbose,verbose2));
+	return gnuradio::get_initial_sptr(new my_packet_sink_impl(threshold,dsss_mode,verbose,verbose2));
 }

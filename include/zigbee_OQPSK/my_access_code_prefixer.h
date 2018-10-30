@@ -19,8 +19,8 @@
  */
 
 
-#ifndef INCLUDED_ZIGBEE_OQPSK_ACCESS_CODE_PREFIXER_H
-#define INCLUDED_ZIGBEE_OQPSK_ACCESS_CODE_PREFIXER_H
+#ifndef INCLUDED_ZIGBEE_OQPSK_MY_ACCESS_CODE_PREFIXER_H
+#define INCLUDED_ZIGBEE_OQPSK_MY_ACCESS_CODE_PREFIXER_H
 
 #include <zigbee_OQPSK/api.h>
 #include <gnuradio/block.h>
@@ -33,17 +33,17 @@ namespace gr {
      * \ingroup zigbee_OQPSK
      *
      */
-    class ZIGBEE_OQPSK_API access_code_prefixer : virtual public gr::block
+    class ZIGBEE_OQPSK_API my_access_code_prefixer : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<access_code_prefixer> sptr;
+      typedef boost::shared_ptr<my_access_code_prefixer> sptr;
 
       /*!
-       * \brief Return a shared_ptr to a new instance of zigbee_OQPSK::access_code_prefixer.
+       * \brief Return a shared_ptr to a new instance of zigbee_OQPSK::my_access_code_prefixer.
        *
-       * To avoid accidental use of raw pointers, zigbee_OQPSK::access_code_prefixer's
+       * To avoid accidental use of raw pointers, zigbee_OQPSK::my_access_code_prefixer's
        * constructor is in a private implementation
-       * class. zigbee_OQPSK::access_code_prefixer::make is the public interface for
+       * class. zigbee_OQPSK::my_access_code_prefixer::make is the public interface for
        * creating new instances.
        */
       static sptr make(int pad=0, int preamble=0x000000a7); // per IEEE 802.15.4
@@ -52,5 +52,5 @@ namespace gr {
   } // namespace zigbee_OQPSK
 } // namespace gr
 
-#endif /* INCLUDED_ZIGBEE_OQPSK_ACCESS_CODE_PREFIXER_H */
+#endif /* INCLUDED_ZIGBEE_OQPSK_MY_ACCESS_CODE_PREFIXER_H */
 

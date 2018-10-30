@@ -19,8 +19,8 @@
  */
 
 
-#ifndef INCLUDED_ZIGBEE_OQPSK_PACKET_SINK_H
-#define INCLUDED_ZIGBEE_OQPSK_PACKET_SINK_H
+#ifndef INCLUDED_ZIGBEE_OQPSK_MY_PACKET_SINK_H
+#define INCLUDED_ZIGBEE_OQPSK_MY_PACKET_SINK_H
 
 #include <zigbee_OQPSK/api.h>
 #include <gnuradio/block.h>
@@ -33,17 +33,17 @@ namespace gr {
      * \ingroup zigbee_OQPSK
      *
      */
-    class ZIGBEE_OQPSK_API packet_sink : virtual public gr::block
+    class ZIGBEE_OQPSK_API my_packet_sink : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<packet_sink> sptr;
+      typedef boost::shared_ptr<my_packet_sink> sptr;
 
       /*!
-       * \brief Return a shared_ptr to a new instance of zigbee_OQPSK::packet_sink.
+       * \brief Return a shared_ptr to a new instance of zigbee_OQPSK::my_packet_sink.
        *
-       * To avoid accidental use of raw pointers, zigbee_OQPSK::packet_sink's
+       * To avoid accidental use of raw pointers, zigbee_OQPSK::my_packet_sink's
        * constructor is in a private implementation
-       * class. zigbee_OQPSK::packet_sink::make is the public interface for
+       * class. zigbee_OQPSK::my_packet_sink::make is the public interface for
        * creating new instances.
        */
       static sptr make(unsigned int threshold = 10,unsigned int dsss_mode=32,
@@ -53,5 +53,5 @@ namespace gr {
   } // namespace zigbee_OQPSK
 } // namespace gr
 
-#endif /* INCLUDED_ZIGBEE_OQPSK_PACKET_SINK_H */
+#endif /* INCLUDED_ZIGBEE_OQPSK_MY_PACKET_SINK_H */
 

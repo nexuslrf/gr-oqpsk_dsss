@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2018 packet_sink.
+ * Copyright 2018 my_packet_sink.
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,28 +19,20 @@
  */
 
 
-#ifndef _QA_PACKET_SINK_H_
-#define _QA_PACKET_SINK_H_
-
-#include <cppunit/extensions/HelperMacros.h>
-#include <cppunit/TestCase.h>
+#include <gnuradio/attributes.h>
+#include <cppunit/TestAssert.h>
+#include "qa_my_packet_sink.h"
+#include <zigbee_OQPSK/my_packet_sink.h>
 
 namespace gr {
   namespace zigbee_OQPSK {
 
-    class qa_packet_sink : public CppUnit::TestCase
+    void
+    qa_my_packet_sink::t1()
     {
-    public:
-      CPPUNIT_TEST_SUITE(qa_packet_sink);
-      CPPUNIT_TEST(t1);
-      CPPUNIT_TEST_SUITE_END();
-
-    private:
-      void t1();
-    };
+      // Put test here
+    }
 
   } /* namespace zigbee_OQPSK */
 } /* namespace gr */
-
-#endif /* _QA_PACKET_SINK_H_ */
 
