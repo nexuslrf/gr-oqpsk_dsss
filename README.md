@@ -57,7 +57,7 @@ This mod `oqpsk_dsss` contians two blocks  `preamble_code_prefixer` & `packet_si
 
 `packet_sink` decode input float flow into orignal message.
 
-To install, do follow cmd:
+To install, do following cmd:
 
 ```bash
 mkdir build
