@@ -40,24 +40,24 @@ using namespace gr::oqpsk_dsss;
 // happening.
 // See "CMOS RFIC Architectures for IEEE 802.15.4 Networks",
 // John Notor, Anthony Caviglia, Gary Levy, for more details.
-static const unsigned long CHIP_MAPPING[4][16] = {
+static const unsigned long long CHIP_MAPPING[4][16] = {
           {
-			0b1001010,
-			0b1001000,
-			0b1000000,
-			0b1000010,
-			0b1100010,
 			0b1100000,
-			0b1101000,
-			0b1101010,
-			0b1101010,
-			0b1101000,
-			0b1100000,
-			0b1100010,
-			0b1000010,
-			0b1000000,
-			0b1001000,
-			0b1001010
+			0b1001110,
+			0b1101100,
+			0b1100110,
+			0b0101110,
+			0b1111010,
+			0b1110111,
+			0b0000111,
+			0b0011111,
+			0b0110001,
+			0b0010011,
+			0b0011001,
+			0b1010001,
+			0b0000101,
+			0b0001000,
+			0b1111000
 		  },
           {
 			0b111010001100010,
@@ -96,36 +96,36 @@ static const unsigned long CHIP_MAPPING[4][16] = {
 			2021988657
 		},
         {
-			0b100011101101110101000101100001111100000010111110010011111010000,
-			0b101000110100001000011110010001101011100000110000010000010111000,
-			0b101111000110000001000001001000011011011001000111000011110100001,
-			0b100000011011111101011111101100011101111010001001010001001100001,
-			0b110000001011111001001111101000001000111011011101010001011000011,
-			0b101110000011000001000001011100001010001101000010000111100100011,
-			0b101101100100011100001111010000101011110001100000010000010010000,
-			0b110111101000100101000100110000111000000110111111010111111011000,
-			0b110110111000100000010000110100101001010111101011000110101111010,
-			0b111101100001011101001011000100111110110101100101000101000010010,
-			0b111010010011010100010100011101001110001100010010010110100001011,
-			0b110101001110101000001010111001001000101111011100000100011001011,
-			0b100101011110101100011010111101011101101110001000000100001101001,
-			0b111011010110010100010100001001011111011000010111010010110001001,
-			0b111000110001001001011010000101111110100100110101000101000111010,
-			0b100010111101110000010001100101101101010011101010000010101110010
+			0b110000001110111101011100110110011100000011101111010111001101100,
+			0b100111000000111011110101110011011001110000001110111101011100110,
+			0b110110011100000011101111010111001101100111000000111011110101110,
+			0b110011011001110000001110111101011100110110011100000011101111010,
+			0b010111001101100111000000111011110101110011011001110000001110111,
+			0b111101011100110110011100000011101111010111001101100111000000111,
+			0b111011110101110011011001110000001110111101011100110110011100000,
+			0b000011101111010111001101100111000000111011110101110011011001110,
+			0b001111110001000010100011001001100011111100010000101000110010011,
+			0b011000111111000100001010001100100110001111110001000010100011001,
+			0b001001100011111100010000101000110010011000111111000100001010001,
+			0b001100100110001111110001000010100011001001100011111100010000101,
+			0b101000110010011000111111000100001010001100100110001111110001000,
+			0b000010100011001001100011111100010000101000110010011000111111000,
+			0b000100001010001100100110001111110001000010100011001001100011111,
+			0b111100010000101000110010011000111111000100001010001100100110001
 		},
     };
 
 static const int MAX_PKT_LEN    = 128 -  1; // remove header and CRC
 static const int MAX_LQI_SAMPLES = 8; // Number of chip correlation samples to take
 
-static const unsigned long MASKTABLE1[] = {
+static const unsigned long long MASKTABLE1[] = {
     0x7E,
     0x7FFE,
     0x7FFFFFFE,
     0x7FFFFFFFFFFFFFFE
 };
 
-static const unsigned long MASKTABLE2[] = {
+static const unsigned long long MASKTABLE2[] = {
     0xFE,
     0xFFFE,
     0xFFFFFFFE,
@@ -176,10 +176,10 @@ void enter_have_header(int payload_len)
 }
 
 
-unsigned char decode_chips(unsigned int chips){
+unsigned char decode_chips(unsigned long long chips){
 	int i;
 	int best_match = 0xFF;
-	int min_threshold = 33; // Matching to 32 chips, could never have a error of 33 chips
+	int min_threshold = d_dsss_mode+1; // Matching to 32 chips, could never have a error of 33 chips
 
 	for(i=0; i<16; i++) {
 		// FIXME: we can store the last chip
@@ -198,7 +198,7 @@ unsigned char decode_chips(unsigned int chips){
 		// LQI: Average number of chips correct * MAX_LQI_SAMPLES
 		//
 		if (d_lqi_sample_count < MAX_LQI_SAMPLES) {
-			d_lqi += 32 - min_threshold;
+			d_lqi += d_dsss_mode - min_threshold;
 			d_lqi_sample_count++;
 		}
 
@@ -320,7 +320,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 							} else {
 								// we are not in the synchronization header
 								if (d_verbose2)
-									fprintf(stderr, "Wrong first byte of SFD. %lu\n", d_shift_reg), fflush(stderr);
+									fprintf(stderr, "Wrong first byte of SFD. %llu\n", d_shift_reg), fflush(stderr);
 								enter_search();
 								break;
 							}
@@ -336,7 +336,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 								break;
 							} else {
 								if (d_verbose)
-									fprintf(stderr, "Wrong second byte of SFD. %lu\n", d_shift_reg), fflush(stderr);
+									fprintf(stderr, "Wrong second byte of SFD. %llu\n", d_shift_reg), fflush(stderr);
 								enter_search();
 								break;
 							}
@@ -365,7 +365,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 					if(c == 0xFF){
 						// something is wrong. restart the search for a sync
 						if(d_verbose2)
-							fprintf(stderr, "Found a not valid chip sequence! %lu\n", d_shift_reg), fflush(stderr);
+							fprintf(stderr, "Found a not valid chip sequence! %llu\n", d_shift_reg), fflush(stderr);
 
 						enter_search();
 						break;
@@ -409,7 +409,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 					if(c == 0xff){
 						// something is wrong. restart the search for a sync
 						if(d_verbose2)
-							fprintf(stderr, "Found a not valid chip sequence! %lu\n", d_shift_reg), fflush(stderr);
+							fprintf(stderr, "Found a not valid chip sequence! %llu\n", d_shift_reg), fflush(stderr);
 
 						enter_search();
 						break;
@@ -475,7 +475,7 @@ private:
 	unsigned int      d_sync_vector;           // 802.15.4 standard is 4x 0 bytes and 1x0xA7
 	unsigned int      d_threshold;             // how many bits may be wrong in sync vector
 
-	unsigned long     d_shift_reg;             // used to look for sync_vector
+	unsigned long long     d_shift_reg;             // used to look for sync_vector
 	int               d_preamble_cnt;          // count on where we are in preamble
 	int               d_chip_cnt;              // counts the chips collected
 
