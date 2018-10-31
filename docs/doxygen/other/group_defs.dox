@@ -1,7 +1,0 @@
-/*!
- * \defgroup block GNU Radio ZIGBEE_OQPSK C++ Signal Processing Blocks
- * \brief All C++ blocks that can be used from the ZIGBEE_OQPSK GNU Radio
- *        module are listed here or in the subcategories below.
- *
- */
-
