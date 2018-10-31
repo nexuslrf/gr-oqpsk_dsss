@@ -75,7 +75,7 @@ sudo ldconfig
   nc -u -l 127.0.0.1 52004
   ```
 
-* /util directory contains two convert python script which helps convert PN code table to desired data format. Details can be seen in ./util/README.md
+* /utils directory contains two convert python script which helps convert PN code table to desired data format. Details can be seen in ./utils/README.md
 
 **HOW TO SWITCH DSSS:**
 
