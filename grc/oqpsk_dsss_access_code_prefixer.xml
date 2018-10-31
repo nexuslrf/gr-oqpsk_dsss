@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<block>
+	<name>Access Code Prefixer</name>
+	<key>oqpsk_dsss_access_code_prefixer</key>
+	<category>[OQPSK_DSSS]</category>
+	<import>import oqpsk_dsss</import>
+	<make>oqpsk_dsss.access_code_prefixer($pad,$preamble)</make>
+
+        <param>
+		<name>Pad</name>
+		<key>pad</key>
+		<value>0x00</value>
+		<type>hex</type>
+	</param>
+        <param>
+		<name>Preamble</name>
+		<key>preamble</key>
+		<value>0x000000a7</value>
+		<type>hex</type>
+	</param>
+	<sink>
+		<name>in</name>
+		<type>message</type>
+	</sink>
+
+	<source>
+		<name>out</name>
+		<type>message</type>
+	</source>
+</block>
